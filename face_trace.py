@@ -26,19 +26,19 @@ fbRange = [6200, 6800]
 
 pid = [0.4, 0.4, 0]
 
-previousError = 0
+previous_error = 0
 
 
-def findFace(img):
-    faceCascade = cv2.CascadeClassifier("Resources/haarcascade_frontalface_default.xml")
+def find_face(img):
+    face_cascade = cv2.CascadeClassifier("Resources/haarcascade_frontalface_default.xml")
 
-    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
-    faces = faceCascade.detectMultiScale(imgGray, 1.2, 8)
+    faces = face_cascade.detectMultiScale(img_gray, 1.2, 8)
 
-    myFaceListC = []
+    my_face_list_c = []
 
-    myFaceListArea = []
+    my_face_list_area = []
 
     for (x, y, w, h) in faces:
         cv2.rectangle(img, (x, y), (x + w, y + h), (0, 0, 255), 2)
@@ -51,22 +51,22 @@ def findFace(img):
 
         cv2.circle(img, (cx, cy), 5, (0, 255, 0), cv2.FILLED)
 
-        myFaceListC.append([cx, cy])
+        my_face_list_c.append([cx, cy])
 
-        myFaceListArea.append(area)
+        my_face_list_area.append(area)
 
-    if len(myFaceListArea) != 0:
+    if len(my_face_list_area) != 0:
 
-        i = myFaceListArea.index(max(myFaceListArea))
+        i = my_face_list_area.index(max(my_face_list_area))
 
-        return img, [myFaceListC[i], myFaceListArea[i]]
+        return img, [my_face_list_c[i], my_face_list_area[i]]
 
     else:
 
         return img, [[0, 0], 0]
 
 
-def trackFace(info, width, pid, pError):
+def track_face(info, width, pid, pError):
     area = info[1]
 
     x, y = info[0]
@@ -107,9 +107,9 @@ while True:
 
     img = cv2.resize(img, (width, height))
 
-    img, info = findFace(img)
+    img, info = find_face(img)
 
-    previousError = trackFace(info, width, pid, previousError)
+    previous_error = track_face(info, width, pid, previous_error)
 
     cv2.imshow("Output", img)
 

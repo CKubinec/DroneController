@@ -1,5 +1,5 @@
 from djitellopy import tello
-import KeeyboardInput as Ki
+import keyboard_input as Ki
 
 Ki.init()
 drone = tello.Tello()
